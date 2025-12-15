@@ -10,8 +10,8 @@
 
 --control_bams 
 --wt_bams
---PE true 
---treatment_name 'H1low' 
+--PE true or --SE true
+--treatment_name 'H1low' or the first field name of your treatment file
 --control_igg 
 --wt_igg 
 
