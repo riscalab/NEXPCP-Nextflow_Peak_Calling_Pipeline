@@ -12,8 +12,8 @@
 --wt_bams
 --PE true or --SE true
 --treatment_name 'H1low' or the first field name of your treatment file
---control_igg 
---wt_igg 
+--control_igg (if you are using --sicer2 parameter)
+--wt_igg (if you are using --sicer2 parameter)
 
 ```
 
