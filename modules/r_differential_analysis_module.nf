@@ -56,6 +56,11 @@ process find_diff_peaks_R_process {
 
     // need the output file name for masterpeak export
 
+    if (params.narrowPeak_data ) {
+
+        merge_dist = 'ATAC_or_narrow_peak'
+    }
+
     master_peak_export_out = "masterpeak_${idr_histone}_${merge_dist}_maxgap_${idr_condition}.bed"
 
     up_peaks_out = "up_${idr_histone}_${full_condition}_regulated_peaks.bed"

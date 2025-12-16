@@ -302,6 +302,7 @@ workflow mk_bw_call_peaks_workflow {
         concat_idr_peaks = find_idr_in_replicates_process.out.final_concat_peaks.collect()
 
         // now group the concat_idr_peaks without merging
+        // there are only two peak files that go below becasue of idr, and that will be one idr merged peak file for each condition
         concat_idr_peaks
             .flatten()
             .map {file -> 
