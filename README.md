@@ -5,6 +5,17 @@
 # Parameters that you may need to run the pipeline
 ### More coming soon
 
+
+# Template files
+```
+Use these template files to show you how I choose parameters below to run my data
+
+run_call_peaks_analysis_atac_data_version.sh
+run_call_peaks_analysis_hera_active_marks.sh
+run_call_peaks_analysis_merged_hera_arnold_version.sh
+
+```
+
 # Required parameters
 ```
 
@@ -17,6 +28,16 @@
 
 ```
 
+# Parameters for controlling the partitions, account and executor
+```
+hpc_partition = 'hpc_a10_a' // this will be the default, and if you want to use risc_a change this to risc_a and the account to risc_condo_bank and not risc_hotel_bank
+
+hpc_account = '-A risc_condo_bank' // for lab members you will pair this with hpc_partition = 'risc_a'
+hpc_account = '-A risc_hotel_bank' This is the default. This is what will allow people to choose a partition other than risc_a. if they want to use risc a, they will have to put in the command line '-A risc_condo_bank' 
+hpc_executor = 'slurm' // for lab members, this is default and will not need to be changed. for others, I do not know how this will behave when running the pipeline on a different executor and if the other options in this section are even relevant with different executors
+
+
+```
 
 ### The parameters here represent the default values used in the pipeline, you, as the user, will set your own
 ```
@@ -49,3 +70,4 @@ sicer2_window_size = '200' // this is the defualt value in sicer2, now the user 
 
 
 # More coming soon
+

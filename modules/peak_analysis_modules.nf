@@ -967,19 +967,23 @@ process merge_concat_peaks_process {
     bothConditions = "${condition[0]}${condition[1]}"
 
     if (params.narrowPeak_data){
-        output_10kb_merged_first_mPeak = first_mPeak.replace(/.narrowPeak/, "_10kb_merged.bed")
-        output_10kb_merged_second_mPeak = second_mPeak.replace(/.narrowPeak/, "_10kb_merged.bed")
-        concat_10kb_merged_both_mPeak = "concat_master_${bothConditions}_${histone}_10kb_merged.bed"
-
-        output_30kb_merged_first_mPeak = first_mPeak.replace(/.narrowPeak/, "_30kb_merged.bed")
-        output_30kb_merged_second_mPeak = second_mPeak.replace(/.narrowPeak/, "_30kb_merged.bed")
-        concat_30kb_merged_both_mPeak = "concat_master_${bothConditions}_${histone}_30kb_merged.bed"
-
-        output_100kb_merged_first_mPeak = first_mPeak.replace(/.narrowPeak/, "_100kb_merged.bed")
-        output_100kb_merged_second_mPeak = second_mPeak.replace(/.narrowPeak/, "_100kb_merged.bed")
-        concat_100kb_merged_both_mPeak = "concat_master_${bothConditions}_${histone}_100kb_merged.bed"
         
-        atac_combined_peak = "concat_master_${bothConditions}_${histone}_ATAC.bed"
+        // outputting these merged files will just confuse the user making them ask why is the pipeline giving merged peaks when they have atac-seq data or narrow histone mark data
+        // so i will also comment out the parts in the script that will concat the merged versions also
+
+        // output_10kb_merged_first_mPeak = first_mPeak.replace(/.narrowPeak/, "_10kb_merged.bed")
+        // output_10kb_merged_second_mPeak = second_mPeak.replace(/.narrowPeak/, "_10kb_merged.bed")
+        // concat_10kb_merged_both_mPeak = "concat_master_${bothConditions}_${histone}_10kb_merged.bed"
+
+        // output_30kb_merged_first_mPeak = first_mPeak.replace(/.narrowPeak/, "_30kb_merged.bed")
+        // output_30kb_merged_second_mPeak = second_mPeak.replace(/.narrowPeak/, "_30kb_merged.bed")
+        // concat_30kb_merged_both_mPeak = "concat_master_${bothConditions}_${histone}_30kb_merged.bed"
+
+        // output_100kb_merged_first_mPeak = first_mPeak.replace(/.narrowPeak/, "_100kb_merged.bed")
+        // output_100kb_merged_second_mPeak = second_mPeak.replace(/.narrowPeak/, "_100kb_merged.bed")
+        // concat_100kb_merged_both_mPeak = "concat_master_${bothConditions}_${histone}_100kb_merged.bed"
+        
+        atac_combined_peak = "concat_master_${bothConditions}_${histone}_ATAC_or_narrow_mark.bed"
 
         """
         #!/usr/bin/env bash
@@ -998,58 +1002,58 @@ process merge_concat_peaks_process {
         
 
         # merging the first concat peaks by 10kb
-        bedtools merge \
-        -i sorted_first_peak.broadPeak \
-        -d 10000 \
-        > ${output_10kb_merged_first_mPeak}
+        #bedtools merge \
+        #-i sorted_first_peak.broadPeak \
+        #-d 10000 \
+        #> \${output_10kb_merged_first_mPeak}
 
 
         # merging the second concat peaks by 10kb
-        bedtools merge \
-        -i sorted_second_peak.broadPeak \
-        -d 10000 \
-        > ${output_10kb_merged_second_mPeak}
+        #bedtools merge \
+        #-i sorted_second_peak.broadPeak \
+        #-d 10000 \
+        #> \${output_10kb_merged_second_mPeak}
 
         # concatenating 10kb
-        cat ${output_10kb_merged_first_mPeak} ${output_10kb_merged_second_mPeak} > ${concat_10kb_merged_both_mPeak}
+        #cat \${output_10kb_merged_first_mPeak} \${output_10kb_merged_second_mPeak} > \${concat_10kb_merged_both_mPeak}
 
 
         # merging the first concat peaks by 30kb
-        bedtools merge \
-        -i sorted_first_peak.broadPeak \
-        -d 30000 \
-        > ${output_30kb_merged_first_mPeak}
+        #bedtools merge \
+        #-i sorted_first_peak.broadPeak \
+        #-d 30000 \
+        #> \${output_30kb_merged_first_mPeak}
 
 
         # merging the second concat peaks by 30kb
-        bedtools merge \
-        -i sorted_second_peak.broadPeak \
-        -d 30000 \
-        > ${output_30kb_merged_second_mPeak}
+        #bedtools merge \
+        #-i sorted_second_peak.broadPeak \
+        #-d 30000 \
+        #> \${output_30kb_merged_second_mPeak}
 
         # concatenating 30kb
-        cat ${output_30kb_merged_first_mPeak} ${output_30kb_merged_second_mPeak} > ${concat_30kb_merged_both_mPeak}
+        #cat \${output_30kb_merged_first_mPeak} \${output_30kb_merged_second_mPeak} > \${concat_30kb_merged_both_mPeak}
 
 
         # merging the first concat peaks by 100kb
-        bedtools merge \
-        -i sorted_first_peak.broadPeak \
-        -d 100000 \
-        > ${output_100kb_merged_first_mPeak}
+        #bedtools merge \
+        #-i sorted_first_peak.broadPeak \
+        #-d 100000 \
+        #> \${output_100kb_merged_first_mPeak}
 
 
         # merging the second concat peaks by 100kb
-        bedtools merge \
-        -i sorted_second_peak.broadPeak \
-        -d 100000 \
-        > ${output_100kb_merged_second_mPeak}
+        #bedtools merge \
+        #-i sorted_second_peak.broadPeak \
+        #-d 100000 \
+        #> \${output_100kb_merged_second_mPeak}
 
         # concatenating 100kb
-        cat ${output_100kb_merged_first_mPeak} ${output_100kb_merged_second_mPeak} > ${concat_100kb_merged_both_mPeak}
+        #cat \${output_100kb_merged_first_mPeak} \${output_100kb_merged_second_mPeak} > \${concat_100kb_merged_both_mPeak}
 
-        cat ${first_mPeak} ${first_mPeak} > test_atac.narrowPeak
+        cat ${first_mPeak} ${second_mPeak} > test_atac_or_narrow_mark.narrowPeak
 
-        cut -f 1-3 test_atac.narrowPeak > ${atac_combined_peak}
+        cut -f 1-3 test_atac_or_narrow_mark.narrowPeak > ${atac_combined_peak}
 
 
         """
