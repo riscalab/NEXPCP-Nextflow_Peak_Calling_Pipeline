@@ -39,6 +39,7 @@ process find_diff_peaks_R_process {
     path("${down_peaks_out}"), emit: down_peaks_emit
     path("${unchanging_peaks_out}"), emit: unchanging_peaks_emit
     path("${other_peaks_out}"), emit: other_peaks_emit
+    path("*.tsv"), emit: deseq2_results_sizefactors_emit
 
 
 
@@ -357,8 +358,25 @@ process find_diff_peaks_R_process {
                                     design = ~ condition_factor)
 
 
+        #############################################################################################
+        # now checking to see if I can estimate and save the szie factors to a file 
+        dds = estimateSizeFactors(dds)
+
+        size_factor_table = sizeFactors(dds)
+
+        write.table(as.data.frame(size_factor_table), file = "size_factor_calculation.tsv", sep = "\\t", quote = FALSE, col.names = NA)
+        #############################################################################################
+
         # using the function on our data
         DDS = DESeq(dds)
+
+        ##############################
+        # saving the deseq2 results table
+        deseq_results_table = results(DDS)
+
+        write.table(as.data.frame(deseq_results_table), file = "deseq_results_table.tsv", sep = "\\t", quote = FALSE, col.names = NA)
+        ##############################
+
 
         norm_DDS = counts(DDS, normalized = TRUE) # normalization with respect to the sequencing depth
 
@@ -1000,8 +1018,24 @@ process find_diff_peaks_R_process {
                                     design = ~ condition_factor)
 
 
+        #############################################################################################
+        # now checking to see if I can estimate and save the szie factors to a file 
+        dds = estimateSizeFactors(dds)
+
+        size_factor_table = sizeFactors(dds)
+
+        write.table(as.data.frame(size_factor_table), file = "size_factor_calculation.tsv", sep = "\\t", quote = FALSE, col.names = NA)
+        #############################################################################################
+
         # using the function on our data
         DDS = DESeq(dds)
+
+        ##############################
+        # saving the deseq2 results table
+        deseq_results_table = results(DDS)
+
+        write.table(as.data.frame(deseq_results_table), file = "deseq_results_table.tsv", sep = "\\t", quote = FALSE, col.names = NA)
+        ##############################
 
         norm_DDS = counts(DDS, normalized = TRUE) # normalization with respect to the sequencing depth
 
@@ -1419,7 +1453,7 @@ process find_diff_peaks_R_process_SE {
     path("${down_peaks_out}"), emit: down_peaks_emit
     path("${unchanging_peaks_out}"), emit: unchanging_peaks_emit
     path("${other_peaks_out}"), emit: other_peaks_emit
-
+    path("*.tsv"), emit: deseq2_results_sizefactors_emit
 
 
     script:
@@ -1726,8 +1760,25 @@ process find_diff_peaks_R_process_SE {
                                     design = ~ condition_factor)
 
 
+        #############################################################################################
+        # now checking to see if I can estimate and save the szie factors to a file 
+        dds = estimateSizeFactors(dds)
+
+        size_factor_table = sizeFactors(dds)
+
+        write.table(as.data.frame(size_factor_table), file = "size_factor_calculation.tsv", sep = "\\t", quote = FALSE, col.names = NA)
+        #############################################################################################
+
+
         # using the function on our data
         DDS = DESeq(dds)
+
+        ##############################
+        # saving the deseq2 results table
+        deseq_results_table = results(DDS)
+
+        write.table(as.data.frame(deseq_results_table), file = "deseq_results_table.tsv", sep = "\\t", quote = FALSE, col.names = NA)
+        ##############################
 
         norm_DDS = counts(DDS, normalized = TRUE) # normalization with respect to the sequencing depth
 
@@ -2369,8 +2420,26 @@ process find_diff_peaks_R_process_SE {
                                     design = ~ condition_factor)
 
 
+        #############################################################################################
+        # now checking to see if I can estimate and save the szie factors to a file 
+        dds = estimateSizeFactors(dds)
+
+        size_factor_table = sizeFactors(dds)
+
+        write.table(as.data.frame(size_factor_table), file = "size_factor_calculation.tsv", sep = "\\t", quote = FALSE, col.names = NA)
+        #############################################################################################
+
+
         # using the function on our data
         DDS = DESeq(dds)
+
+        ##############################
+        # saving the deseq2 results table
+        deseq_results_table = results(DDS)
+
+        write.table(as.data.frame(deseq_results_table), file = "deseq_results_table.tsv", sep = "\\t", quote = FALSE, col.names = NA)
+        ##############################
+
 
         norm_DDS = counts(DDS, normalized = TRUE) # normalization with respect to the sequencing depth
 
