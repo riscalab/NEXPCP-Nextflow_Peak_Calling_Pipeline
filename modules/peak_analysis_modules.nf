@@ -756,6 +756,247 @@ process macs2_call_peaks_process_both {
     
 }
 
+// now need to change the tool to macs3 in conda, and in the script section.
+// but the outputs should be the same.
+process macs3_call_peaks_process_both {
+
+    //debug true
+    errorStrategy 'ignore'
+
+    label 'normal_big_resources'
+
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/macs2_rj'
+    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/macs3_rj'
+
+    publishDir "./peak_files/${condition_label}", mode: 'copy', pattern: '*', overwrite: true
+
+
+
+    input:
+
+    tuple val(condition_label), val(histone_label), val(replicate_label), val(meta_name), val(bam_file_name), path(bam_path), path(bai_path)
+
+    path(ref_genome)
+    // condition_label has the same condition multiple times (3 in this run)
+    // the replicate_label had multiple also (3) but not the same (r1,r2,r3)
+
+
+    output:
+    path("*broadPeak"), optional: true, emit: broad_peaks
+    path("*narrowPeak"), optional: true, emit: narrow_peaks
+    path("*"), emit: macs2_files
+    path("*ppois*"), emit: ppois_macs2_file
+
+
+
+    script:
+
+    //num_files = bam_file_name.size()
+    
+    old_peak_files = "${bam_file_name}_old_macs2_stats"
+    
+
+    if (params.narrowPeak_data) {
+
+    
+        
+        """
+        #!/usr/bin/env bash
+
+        ##### macs2 params ######
+        # use this code to find params used
+        # macs2 callpeak --help
+
+        # changed --fe-cutoff from 2 to 1 which is default. to see if it will give results in the bio rep s10 file
+        # that didn't change anything
+
+        # I want to call peaks less stringently so we can bring a bit more noise into the peaks that were called and then idr will find the best ones
+        # so changing --fe-cutoff from 2 to 1, but i will remove it altogether
+        # changing -qvalue from '0.05' to '0.01' probably not using it anymore
+        # using --pvalue 1e-3 
+        #########################
+
+        #echo "these are the file names: \${bam_file_name}"
+
+        #bam_list=( \${bam_file_name.join(' ')} )
+
+            
+
+        #bam_basename=\$(basename \${bam_list[i]})
+
+        ############ new settings with encode suggestions, but since i use bampe, i dont have to use --shift or --extsize
+        ############ kept some other thinks from my own settings like the pvalue at 0.05 now and not encodes 0.01 or the old 0.001
+        ############ using all for keep-dups instead of 1
+        
+        macs3 callpeak \
+        --treatment ${bam_file_name} \
+        --format "BAMPE" \
+        --gsize "hs" \
+        --keep-dup all \
+        --outdir . \
+        --name ${bam_file_name} \
+        --bdg  \
+        --trackline \
+        --pvalue '0.05' \
+        --cutoff-analysis \
+        --call-summits
+        ########################################
+
+        ############### this will be the default macs3 settings but will try encode settings above ###################
+        #macs3 callpeak \
+        #--treatment \${bam_file_name} \
+        #--format "BAM" \
+        #--gsize "hs" \
+        #--keep-dup '1' \
+        #--outdir . \
+        #--name \${bam_file_name} \
+        #--bdg  \
+        #--trackline \
+        #--pvalue '0.05' \
+        #--cutoff-analysis 
+
+        ##################################################################################################################
+        #--pvalue '1e-3' \
+        #--cutoff-analysis 
+
+        # first compute the sval score then use it in macs2 bdgcmp
+        chipReads=\$(cat "${bam_file_name}_peaks.narrowPeak"| wc -l | awk '{printf "%f", \$1/1000000}')
+        
+        # since we do not have a control we do not have to get the control reads and compare it with the chipReads(C&T reads) to find which is the lower reads and use that as sval
+        # so we will just use the chipReads as sval
+        sval=\$(echo "\$chipReads")
+
+        echo "sval when creating pvalue bigwig from macs2 is \$sval"
+
+
+        # now we need to create the signal pvalue bigwig file. (according to the encode chip-seq pipeline google doc: https://docs.google.com/document/d/1lG_Rd7fnYgRpSIqrIfuVlAz2dW1VaSQThzk836Db99c/edit?tab=t.0)
+
+        macs3 bdgcmp \
+        -t *_treat_pileup.bdg \
+        -c *_control_lambda.bdg \
+        -o ${bam_file_name}_ppois.bdg \
+        -m ppois \
+        -S \$sval
+
+
+
+
+        # this is me trying to get the old peak files that produce the correct signal in peaks
+        #macs2 callpeak \
+        --treatment \${bam_file_name} \
+        --format "BAM" \
+        --gsize "hs" \
+        --keep-dup '1' \
+        --outdir . \
+        --name \${old_peak_files} \
+        --bdg  \
+        --trackline \
+        --qvalue '0.05' \
+        --broad \
+        --fe-cutoff 2 \
+        --cutoff-analysis
+        
+        # use bedtools merge, in another process, on all the broadpeak files  and the option -b for merging at 1kb, 2kb, 5kb. generate different merged files for the same data to compare
+
+        # I need to remove nolambda because scrm r1 only is calling 7 peaks and the IDR tool needs at least 20 peaks to run
+        # this is according to the IDR error output
+
+
+        """
+    }
+    else {
+
+        """
+        #!/usr/bin/env bash
+
+        ##### macs2 params ######
+        # use this code to find params used
+        # macs2 callpeak --help
+
+        # changed --fe-cutoff from 2 to 1 which is default. to see if it will give results in the bio rep s10 file
+        # that didn't change anything
+
+        # I want to call peaks less stringently so we can bring a bit more noise into the peaks that were called and then idr will find the best ones
+        # so changing --fe-cutoff from 2 to 1, but i will remove it altogether
+        # changing -qvalue from '0.05' to '0.01' probably not using it anymore
+        # using --pvalue 1e-3 
+        #########################
+
+        #echo "these are the file names: \${bam_file_name}"
+
+        #bam_list=( \${bam_file_name.join(' ')} )
+
+            
+
+        #bam_basename=\$(basename \${bam_list[i]})
+
+
+        macs3 callpeak \
+        --treatment ${bam_file_name} \
+        --format "BAM" \
+        --gsize "hs" \
+        --keep-dup '1' \
+        --outdir . \
+        --name ${bam_file_name} \
+        --bdg  \
+        --trackline \
+        --pvalue '1e-3' \
+        --broad \
+        --cutoff-analysis \
+        --nolambda
+
+        # first compute the sval score then use it in macs2 bdgcmp
+        chipReads=\$(cat "${bam_file_name}_peaks.broadPeak"| wc -l | awk '{printf "%f", \$1/1000000}')
+        
+        # since we do not have a control we do not have to get the control reads and compare it with the chipReads(C&T reads) to find which is the lower reads and use that as sval
+        # so we will just use the chipReads as sval
+        sval=\$(echo "\$chipReads")
+
+        echo "sval when creating pvalue bigwig from macs2 is \$sval"
+
+
+        # now we need to create the signal pvalue bigwig file. (according to the encode chip-seq pipeline google doc: https://docs.google.com/document/d/1lG_Rd7fnYgRpSIqrIfuVlAz2dW1VaSQThzk836Db99c/edit?tab=t.0)
+
+        macs3 bdgcmp \
+        -t *_treat_pileup.bdg \
+        -c *_control_lambda.bdg \
+        -o ${bam_file_name}_ppois.bdg \
+        -m ppois \
+        -S \$sval
+
+
+
+
+        # this is me trying to get the old peak files that produce the correct signal in peaks
+        #macs2 callpeak \
+        --treatment \${bam_file_name} \
+        --format "BAM" \
+        --gsize "hs" \
+        --keep-dup '1' \
+        --outdir . \
+        --name \${old_peak_files} \
+        --bdg  \
+        --trackline \
+        --qvalue '0.05' \
+        --broad \
+        --fe-cutoff 2 \
+        --cutoff-analysis
+        
+        # use bedtools merge, in another process, on all the broadpeak files  and the option -b for merging at 1kb, 2kb, 5kb. generate different merged files for the same data to compare
+
+        # I need to remove nolambda because scrm r1 only is calling 7 peaks and the IDR tool needs at least 20 peaks to run
+        # this is according to the IDR error output
+
+
+        """
+
+
+    }
+    
+
+    
+}
+
 process get_pval_bedgraph {
     conda '/ru-auth/local/home/rjohnson/miniconda3/envs/bedtools_rj'
     label 'normal_big_resources'

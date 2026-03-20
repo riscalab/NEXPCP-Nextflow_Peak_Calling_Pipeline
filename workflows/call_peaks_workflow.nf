@@ -8,6 +8,7 @@ include {
     plot_histone_at_genes_process;
     merge_peaks_bedtools_process;
     macs2_call_peaks_process_both;
+    macs3_call_peaks_process_both;
     plot_histones_at_peaks_process;
     find_idr_in_replicates_process;
     multiqc_process;
@@ -248,8 +249,51 @@ workflow mk_bw_call_peaks_workflow {
 
         kenttools_get_bigwig(pval_bedgraph_ch, ref_genome_size_ch)
         //chrom_size_ch
+
+
+        if (params.narrowPeak_data) {
+        macspeaks_ch = macs2_call_peaks_process_both.out.narrow_peaks
+
+        macspeaks_ch_backup = macs2_call_peaks_process_both.out.narrow_peaks
+        }
+        else if (params.broadPeak_data){
+
+        macspeaks_ch = macs2_call_peaks_process_both.out.broad_peaks
+        macspeaks_ch_backup = macs2_call_peaks_process_both.out.broad_peaks
+        }
     
     
+    }
+    else if (params.macs3) {
+
+        // just need to copy and paste here, but change anything to macs3, then add the process in the module file and parameter in the config file
+
+        macs3_call_peaks_process_both(concat_wt_control_bam_meta_ch, ref_genome_ch) // might need ref_genome
+        //macs2_call_peaks_process_wt()
+
+        // i want to get the ppois files from the macs2 process
+        ppois_files_ch = macs3_call_peaks_process_both.out.ppois_macs2_file
+
+        get_pval_bedgraph(ppois_files_ch, ref_genome_size_ch)
+
+        pval_bedgraph_ch = get_pval_bedgraph.out.pvalue_bedgraph_file
+
+        chrom_size_ch = get_pval_bedgraph.out.chrom_size_file
+
+        kenttools_get_bigwig(pval_bedgraph_ch, ref_genome_size_ch)
+
+
+        if (params.narrowPeak_data) {
+        macspeaks_ch = macs3_call_peaks_process_both.out.narrow_peaks
+
+        macspeaks_ch_backup = macs3_call_peaks_process_both.out.narrow_peaks
+        }
+        else if (params.broadPeak_data){
+
+        macspeaks_ch = macs3_call_peaks_process_both.out.broad_peaks
+        macspeaks_ch_backup = macs3_call_peaks_process_both.out.broad_peaks
+        }
+
     }
     // if (params.sicer2) {
 
@@ -264,9 +308,9 @@ workflow mk_bw_call_peaks_workflow {
 
     if (params.narrowPeak_data ) {
 
-        macspeaks_ch = macs2_call_peaks_process_both.out.narrow_peaks
+        // macspeaks_ch = macs2_call_peaks_process_both.out.narrow_peaks
 
-        macspeaks_ch_backup = macs2_call_peaks_process_both.out.narrow_peaks
+        // macspeaks_ch_backup = macs2_call_peaks_process_both.out.narrow_peaks
 
 
         macspeaks_ch_backup
@@ -433,8 +477,8 @@ workflow mk_bw_call_peaks_workflow {
         // this is what i called the channels before changing it to macspeaks...
         //broadpeaks_ch
         //broadpeaks_ch_backup
-        macspeaks_ch = macs2_call_peaks_process_both.out.broad_peaks
-        macspeaks_ch_backup = macs2_call_peaks_process_both.out.broad_peaks
+        // macspeaks_ch = macs2_call_peaks_process_both.out.broad_peaks
+        // macspeaks_ch_backup = macs2_call_peaks_process_both.out.broad_peaks
         //broadpeaks_ch.view() // now got the peaks so time to emit this channel.
 
         // okay, another thing to do is to use bedtools to merge peaks by 1kb, 2kb, and 5kb to see how they look
