@@ -62,11 +62,18 @@ nextflow call_peaks_analysis_pipeline.nf -profile peak_calling_analysis -resume 
 --macs3 \
 --narrowPeak_data true \
 --atac_analysis true \
---control_histone_signal '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/merged_bams/Scr_H3K27me3*{bam,bam.bai}' \
---treatment_histone_signal '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/merged_bams/H1lo_H3K27me3*{bam,bam.bai}' \
---control_ATAC_bam '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/test_atac_data_pipeline/atac_bams/atac_shifted_bams/merged_shifted_bams/dH1_ATAC_allmerged*{bam,bam.bai}' \
---treatment_ATAC_bam '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/test_atac_data_pipeline/atac_bams/atac_shifted_bams/merged_shifted_bams/scr_ATAC_allmerged*{bam,bam.bai}' \
---cpm_bigwig true
+--tss_enrich_atac true \
+--rna_treatment_bam '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/proseq_merged_bams/H1low_proseq_mergedbams_dedup*{bam.bai,bam}' \
+--rna_control_bam '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/proseq_merged_bams/Scr_proseq_mergedbams_dedup*{bam.bai,bam}' \
+--cpm_bigwig true \
+--enrichTSS_bed_region '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/test_atac_data_pipeline/NEXPCP-Nextflow_Peak_Calling_Pipeline/bin/hg38_TSS_export_bedrearrange_gene.bed'
+
+
+# --control_histone_signal '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/merged_bams/Scr_H3K27me3*{bam,bam.bai}' \
+# --treatment_histone_signal '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/merged_bams/H1lo_H3K27me3*{bam,bam.bai}' \
+# --control_ATAC_bam '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/test_atac_data_pipeline/atac_bams/atac_shifted_bams/merged_shifted_bams/dH1_ATAC_allmerged*{bam,bam.bai}' \
+# --treatment_ATAC_bam '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/test_atac_data_pipeline/atac_bams/atac_shifted_bams/merged_shifted_bams/scr_ATAC_allmerged*{bam,bam.bai}' \
+# --cpm_bigwig true
 
 # need to try 0.1 idr and try 0.05 idr, I normally use 0.4
 # keeping the macs3 pvalue at 0.05
