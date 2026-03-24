@@ -37,7 +37,8 @@ include {
     atac_enrich_counts_2nd_version_process;
     r_atac_enrich_plot_2nd_version_process;
     sicer2_peakcall_process_noigg;
-    concat_sicer2_peaks_process
+    concat_sicer2_peaks_process;
+    enrichTSS_process
     // macs2_call_peaks_process_wt
     
 
@@ -2265,11 +2266,17 @@ workflow get_proximal_distal_atac_peaks_workflow {
     proseq_down_gene_ch
     proseq_unchanging_gene_ch
     ref_genome_size_ch
-
     // I want to get the histone (H3k27me3) bigwigs in here for the calculations
-
     control_histone_bams
     treatment_histone_bams
+    //need to put this under here!!!!
+    treatment_proseq_bam
+    control_proseq_bam
+
+    // actually needed these which will be the atac-seq bams to calcualte the enrichment TSS
+    control_bams_index_tuple_ch
+    wt_bams_index_tuple_ch
+    enrichTSS_bed_region_ch
 
 
 
@@ -2424,7 +2431,48 @@ workflow get_proximal_distal_atac_peaks_workflow {
         r_atac_enrich_plot_2nd_version_process(enrich_counts_tab_meta_ch)
 
     }
-    else {
+    
+    if (params.tss_enrich_atac) {
+
+        // then make this a stand alone if statement for TSS enrichment in atac-seq?
+        // treatment_proseq_bam
+        // control_proseq_bam
+
+        // treatment_proseq_bam.view{ proseq_bams -> "These are the proseq bams that will be used for tss enrichment: $proseq_bams"}
+
+        // using these instead control_bams_index_tuple_ch, wt_bams_index_tuple_ch
+        // treatment_proseq_bam
+        //     .concat(control_proseq_bam)
+
+        wt_bams_index_tuple_ch
+            .concat(control_bams_index_tuple_ch)
+            .map { key_tuple, tuple_files -> 
+
+            bam = tuple_files[0]
+            bai = tuple_files[1]
+
+            file_basename = bam.baseName
+            // tokens = key_tuple.tokenize("_")
+            tokens = file_basename.tokenize("_")
+            condition = tokens[0]
+            exper_type = tokens[1]
+            replicate_type = tokens[2]
+
+            // now make a tuple to output everything
+            tuple(condition, exper_type, replicate_type, bam, bai)
+
+                
+            }
+            .view{ proseq_bams -> "These are the proseq bams that will be used for tss enrichment concat: $proseq_bams"}
+            .set{transcript_bams_bai_tuple_ch}
+        // once this works, I will create a proper process that takes the bams and uses Viviana's/ Nicole's scrip
+        // I think the script takes one bam file at a time
+
+        // i think what this really does is takes the atac-seq bam files, and bed files for TSS genes (up genes for our case)
+        // use this as the tss up proseq gene bed file proseq_up_gene_ch (not sure if the script gets the TSS from a full bed file)
+
+        // enrichTSS_process(transcript_bams_bai_tuple_ch, master_peak_list_true)
+        enrichTSS_process(transcript_bams_bai_tuple_ch, enrichTSS_bed_region_ch)
 
     }
 

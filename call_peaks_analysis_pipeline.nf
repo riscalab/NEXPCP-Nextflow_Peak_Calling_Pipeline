@@ -79,6 +79,10 @@ master_peaks_ch = Channel.value(params.master_peaks_file)
 params.knownGene_bed_file = file('/lustre/fs4/home/rjohnson/downloads/genomes/hg38/genes/knownGene.hg38.bed')
 knownGene_ch = Channel.value(params.knownGene_bed_file)
 
+// actually changing the name for the bed file used in enrichTSS
+// params.enrichTSS_bed_region = file('/lustre/fs4/home/rjohnson/pipelines/peak_calling_analysis_pipeline/proseq_data/proseq_up_genesID_with_coord.bed')
+params.enrichTSS_bed_region = file('/rugpfs/fs0/risc_lab/scratch/hcanaj/ATAC_seq_K562_Scrm_dH1/K5621-6-1/hg38_TSS_export_bedrearrange_gene.bed')
+enrichTSS_bed_region_ch = Channel.value(params.enrichTSS_bed_region)
 // proseq_up_genesID_with_coord.bed
 // params.proseq_up_genes = file('/lustre/fs4/home/rjohnson/pipelines/peak_calling_analysis_pipeline/proseq_data/proseq_up_genes_with_coord.tsv')
 params.proseq_up_genes = file('/lustre/fs4/home/rjohnson/pipelines/peak_calling_analysis_pipeline/proseq_data/proseq_up_genesID_with_coord.bed')
@@ -143,10 +147,10 @@ treatment_histone_bams = Channel.fromFilePairs(params.treatment_histone_signal)
 // get the proseq bam files from the user if they are running the  ATAC-seq analysis
 // first I will merge the pro-seq bam files and then use the merged files as input here
 params.rna_treatment_bam = file('/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/proseq_merged_bams/H1low_proseq_mergedbams_dedup*{bam.bai,bam}')
-treatment_proseq_bam = Channel.value(params.rna_treatment_bam)
+treatment_proseq_bam = Channel.fromFilePairs(params.rna_treatment_bam)
 
 params.rna_control_bam = file('/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/proseq_merged_bams/Scr_proseq_mergedbams_dedup*{bam.bai,bam}')
-control_proseq_bam = Channel.value(params.rna_control_bam)
+control_proseq_bam = Channel.fromFilePairs(params.rna_control_bam)
 
 // control_proseq_bam.view{it -> "this is the input fromFilePairs for the control proseq: $it"}
 
@@ -351,7 +355,8 @@ workflow {
         // this will be to find the atac-seq peaks that are near the proseq genes
 
         // i want to get the up peaks that are near proseq gene tss or distal from them
-        get_proximal_distal_atac_peaks_workflow(up_peaks_list_true, down_peaks_list_true, unchanging_peaks_list_true, master_peak_list_true, proseq_up_gene_ch, proseq_down_gene_ch, proseq_unchanging_gene_ch, ref_genome_size_ch, control_histone_bams, treatment_histone_bams)
+        // maybe here would be good to add the proseq bams or the user can use rna seq bams
+        get_proximal_distal_atac_peaks_workflow(up_peaks_list_true, down_peaks_list_true, unchanging_peaks_list_true, master_peak_list_true, proseq_up_gene_ch, proseq_down_gene_ch, proseq_unchanging_gene_ch, ref_genome_size_ch, control_histone_bams, treatment_histone_bams, treatment_proseq_bam, control_proseq_bam, control_bams_index_tuple_ch, wt_bams_index_tuple_ch, enrichTSS_bed_region_ch)
 
 
         

@@ -827,7 +827,7 @@ process macs3_call_peaks_process_both {
         ############ new settings with encode suggestions, but since i use bampe, i dont have to use --shift or --extsize
         ############ kept some other thinks from my own settings like the pvalue at 0.05 now and not encodes 0.01 or the old 0.001
         ############ using all for keep-dups instead of 1
-        
+
         macs3 callpeak \
         --treatment ${bam_file_name} \
         --format "BAMPE" \
@@ -7891,6 +7891,47 @@ process get_atacPeaks_in_roadmapPeaks_process {
     -f 0.20 \
     > ${out_nochange_narrow_intersect_file}
 
+
+
+    """
+}
+
+process enrichTSS_process {
+
+    label 'normal_big_memory'
+    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/python_w_packages_rj'
+
+    publishDir "enrichTSS_outputs/", mode: 'copy', pattern: '*', overwrite: true
+
+    input:
+
+    tuple val(condition),  val(exper_type), val(replicate_type), path(bam), path(bai)
+    path(bed_master_peak_data)
+
+
+
+    output:
+
+    path("${out_file_name}.log"), emit: refseq_tss_log
+    path("*.png"), emit: refseq_tss_png
+
+    script:
+
+    out_file_name = "${condition}_${exper_type}_${replicate_type}.RefSeqTSS"
+
+
+    """
+    #!/usr/bin/env bash
+
+    # use awk to get keep only the first 3 fields
+    # need to remember to put the strand information in the bed file also, but as 6th slot, because -s flag looks for strand info there
+    # added the gene ids in the 5th slot
+    # have to remember that this is hard coded now
+    awk 'OFS="\t" {print \$1 "\t" \$2 "\t" \$3 "\t" \$4 "\t" \$5 "\t" \$6}' ${bed_master_peak_data}  > proper_gene_file.bed
+
+    #pyMakeVplot_css_v01.py -a \${bam} -b \${bed_master_peak_data} -e 2000 -p ends -s 6 -v -u --atac -o \${out_file_name}
+
+    pyMakeVplot_css_v01.py -a ${bam} -b  proper_gene_file.bed -e 2000 -p ends -s 6 -v -u --atac -o ${out_file_name}
 
 
     """
