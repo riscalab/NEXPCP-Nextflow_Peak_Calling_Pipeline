@@ -39,6 +39,15 @@ hpc_executor = 'slurm' // for lab members, this is default and will not need to 
 
 ```
 
+# Parameters for QC on ATAC-seq main data by calculating the enrichment TSS score
+
+```
+
+--tss_enrich_atac true // use this parameter and set to true if you want ot get the QC of how many ATAC-seq reads are within the TSS of genes
+--enrichTSS_bed_region // pair with this parameter, you will provide a bed file that contains the regions of all genes in proper bed format
+
+```
+
 ### The parameters here represent the default values used in the pipeline, you, as the user, will set your own
 ```
 plot_idr = 0.05 // the default is 0.05 to report in the png plots which peaks passed this threshold
