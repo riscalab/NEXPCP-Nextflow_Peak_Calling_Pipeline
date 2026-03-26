@@ -146,10 +146,10 @@ treatment_histone_bams = Channel.fromFilePairs(params.treatment_histone_signal)
 
 // get the proseq bam files from the user if they are running the  ATAC-seq analysis
 // first I will merge the pro-seq bam files and then use the merged files as input here
-params.rna_treatment_bam = file('/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/proseq_merged_bams/H1low_proseq_mergedbams_dedup*{bam.bai,bam}')
+params.rna_treatment_bam = '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/proseq_merged_bams/H1low_proseq_mergedbams_dedup*{bam.bai,bam}'
 treatment_proseq_bam = Channel.fromFilePairs(params.rna_treatment_bam)
 
-params.rna_control_bam = file('/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/proseq_merged_bams/Scr_proseq_mergedbams_dedup*{bam.bai,bam}')
+params.rna_control_bam = '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/proseq_merged_bams/Scr_proseq_mergedbams_dedup*{bam.bai,bam}'
 control_proseq_bam = Channel.fromFilePairs(params.rna_control_bam)
 
 // control_proseq_bam.view{it -> "this is the input fromFilePairs for the control proseq: $it"}

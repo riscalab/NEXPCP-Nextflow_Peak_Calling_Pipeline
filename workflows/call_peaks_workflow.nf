@@ -333,9 +333,21 @@ workflow mk_bw_call_peaks_workflow {
             
             }
             .groupTuple(by:0, sort:true)
-            //.view()
+            .view{it -> "macspeak_gtuple with all the macs called peak see how it looks: $it"}
             .set{macspeak_gtuple_meta_ch}
 
+        // trying something new, where I get the size and use combination
+        // not able to do this below
+        // neither subsequences nor combinations work
+        // macspeak_gtuple_meta_ch
+        //     .map{grouping_key, condition, histone, replicate, bio_rep, file_name, basename, peakpath ->
+            
+        //     number_of_replicates = peakpath.size()
+
+        //     seeing_the_combinations = peakpath.subsequences.findAll{it.size() == 2}
+
+        //     }
+        //     .view{it -> "these are all possible replicate combinations: $it"}
         // split the broadpeaks so i have them grouped by their condition label
 
 
@@ -2603,11 +2615,35 @@ workflow get_roadmap_histone_enrichment_workflow {
         .view{it -> "this should be the atac bigwig/ bams : $it"}
         .set{atac_bigwig_cat}
 
+
+    // changed the imput to be from file pairs so that included a key, now have to deal with the key and remove it
     control_proseq_bam
         .concat(treatment_proseq_bam)
+        .map { key, bam_bai ->
+            bam_bai
 
+        }
         .view{it -> "Proseq bams concatenated: $it"}
         .set{proseq_bams_cat}
+    // treatment_proseq_bam
+    //     .map {key, bam_bai ->
+        
+    //         bam_bai
+    //     }
+    //     .set{treatment_proseq_bam_bai}
+
+    // control_proseq_bam_bai
+    //     .concat(treatment_proseq_bam_bai)
+
+    //     .view{it -> "Proseq bams concatenated: $it"}
+    //     .set{proseq_bams_cat}
+
+    // this was the old version of what was above
+    // control_proseq_bam
+    //     .concat(treatment_proseq_bam)
+
+    //     .view{it -> "Proseq bams concatenated: $it"}
+    //     .set{proseq_bams_cat}
 
     proseq_bams_cat
         .concat(atac_bigwig_cat) // this is actually the atac bam files
