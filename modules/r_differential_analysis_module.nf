@@ -424,7 +424,7 @@ process find_diff_peaks_R_process {
         
 
         #unchanging_reg = resLFC[which(resLFC\$padj < 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
-        unchanging_reg = resLFC[which(resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
+        unchanging_reg = resLFC[which(resLFC\$padj < 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
 
         #others_reg = resLFC[which(resLFC\$padj > 0.05), ] 
         others_reg = resLFC[which(resLFC\$padj > 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1), ]        
@@ -1094,7 +1094,7 @@ process find_diff_peaks_R_process {
         
 
         #unchanging_reg = resLFC[which(resLFC\$padj < 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
-        unchanging_reg = resLFC[which(resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
+        unchanging_reg = resLFC[which(resLFC\$padj < 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
 
         #others_reg = resLFC[which(resLFC\$padj > 0.05), ] 
         others_reg = resLFC[which(resLFC\$padj > 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1), ]        
@@ -1860,7 +1860,7 @@ process find_diff_peaks_R_process_SE {
         
 
         #unchanging_reg = resLFC[which(resLFC\$padj < 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
-        unchanging_reg = resLFC[which(resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
+        unchanging_reg = resLFC[which(resLFC\$padj < 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
 
         #others_reg = resLFC[which(resLFC\$padj > 0.05), ] 
         others_reg = resLFC[which(resLFC\$padj > 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1), ]         
@@ -2533,7 +2533,7 @@ process find_diff_peaks_R_process_SE {
         
 
         #unchanging_reg = resLFC[which(resLFC\$padj < 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
-        unchanging_reg = resLFC[which(resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
+        unchanging_reg = resLFC[which(resLFC\$padj < 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1) ,]
 
         #others_reg = resLFC[which(resLFC\$padj > 0.05), ] 
         others_reg = resLFC[which(resLFC\$padj > 0.05 & resLFC\$log2FoldChange <1 & resLFC\$log2FoldChange > -1), ]        
