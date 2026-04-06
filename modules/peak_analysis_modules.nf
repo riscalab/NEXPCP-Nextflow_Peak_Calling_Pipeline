@@ -7913,7 +7913,7 @@ process enrichTSS_process {
     output:
 
     path("${out_file_name}.log"), emit: refseq_tss_log
-    path("*.png"), emit: refseq_tss_png
+    path("*.pdf"), emit: refseq_tss_pdf
 
     script:
 
