@@ -44,10 +44,17 @@ include {
 
 }from '../modules/peak_analysis_modules.nf'
 
+// I will make a new copy of this file where i have these processes utalizing parallelization
+// include {
+//     find_diff_peaks_R_process;
+//     find_diff_peaks_R_process_SE
+// }from '../modules/r_differential_analysis_module.nf'
+
+// this is the parallelization r scripts
 include {
     find_diff_peaks_R_process;
     find_diff_peaks_R_process_SE
-}from '../modules/r_differential_analysis_module.nf'
+}from '../modules/r_parallel_differential_analysis_module.nf'
 
 
 
