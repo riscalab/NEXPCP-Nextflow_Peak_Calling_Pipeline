@@ -1,6 +1,7 @@
 process find_diff_peaks_R_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/r_language'
+    // commenting out the conda environment for R because now I am using apptainer. check nextflow.config to see
+    //conda '/ru-auth/local/home/rjohnson/miniconda3/envs/r_language'
 
 
     publishDir "./nextflow_R_script_outputs/${idr_histone}/", mode: 'copy', pattern: '*'
@@ -117,7 +118,7 @@ process find_diff_peaks_R_process {
 
         library(DESeq2)
         library(GenomicRanges)
-        library(chromVAR)
+        #library(chromVAR)
         library(tidyr)
         library(EnhancedVolcano)
         library(readr)
@@ -872,7 +873,7 @@ process find_diff_peaks_R_process {
 
         library(DESeq2)
         library(GenomicRanges)
-        library(chromVAR)
+        #library(chromVAR)
         library(tidyr)
         library(EnhancedVolcano)
         library(readr)
@@ -1707,7 +1708,7 @@ process find_diff_peaks_R_process_SE {
 
         library(DESeq2)
         library(GenomicRanges)
-        library(chromVAR)
+        #library(chromVAR)
         library(tidyr)
         library(EnhancedVolcano)
         library(readr)
@@ -2456,7 +2457,7 @@ process find_diff_peaks_R_process_SE {
 
         library(DESeq2)
         library(GenomicRanges)
-        library(chromVAR)
+        #library(chromVAR)
         library(tidyr)
         library(EnhancedVolcano)
         library(readr)
