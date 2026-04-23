@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --time=1-00:00:00
 #SBATCH --job-name=nextflow_chip
-#SBATCH --partition=hpc_l40s 
+#SBATCH --partition=hpc_l40s_b
 #hpc_l40s_b
 #hpc_a10_a 
 #hpc_l40s
@@ -67,6 +67,10 @@ nextflow call_peaks_analysis_pipeline.nf -profile peak_calling_analysis -resume 
 --rna_control_bam '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/proseq_merged_bams/Scr_proseq_mergedbams_dedup*{bam.bai,bam}' \
 --cpm_bigwig true \
 --enrichTSS_bed_region '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/test_atac_data_pipeline/NEXPCP-Nextflow_Peak_Calling_Pipeline/bin/hg38_TSS_export_bedrearrange_gene.bed'
+#  \
+# --hpc_account '-A risc_condo_bank' \
+# --hpc_partition 'risc_a'
+
 
 
 # --control_histone_signal '/lustre/fs4/home/rjohnson/pipelines/merged_hera_arnold_analysis/peak_calling_workflow/merged_bams/Scr_H3K27me3*{bam,bam.bai}' \
