@@ -6,7 +6,7 @@ process make_alignment_bw_process_control {
 
     label 'normal_big_memory'
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools_rj'
 
     publishDir "./bigwigs/${histone_label}_bigwigs/", mode: 'copy', pattern: "*${histone_label}*.bigwig", overwrite: true
 
@@ -198,7 +198,7 @@ process make_alignment_bw_process_wt {
 
     label 'normal_big_memory'
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools_rj'
 
     publishDir "./bigwigs/${histone_label}_bigwigs/", mode: 'copy', pattern: "*${histone_label}*.bigwig", overwrite: true
 
@@ -378,7 +378,7 @@ process make_alignment_bw_process_wt {
 
 process plot_histone_at_genes_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
 
     label 'normal_big_resources'
     
@@ -5026,7 +5026,7 @@ process plot_histones_at_peaks_process {
 
     //debug true
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
 
     label 'normal_big_resources'
 
@@ -5140,7 +5140,7 @@ process plot_histones_at_peaks_process {
 // I have to do the version above instead
 process plot_at_up_down_peaks_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
 
     label 'normal_big_memory'
 
@@ -5670,7 +5670,7 @@ process plot_at_up_down_peaks_process {
 
 process atac_signal_over_peaks_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
 
     label 'normal_big_resources'
     
@@ -6041,7 +6041,7 @@ process bedtools_stranded_create_process {
 
 process signal_over_gene_tss_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
 
     label 'normal_big_memory'
     // label 'normal_big_resources'
@@ -7002,7 +7002,7 @@ process get_atacPeaks_in_genetss_process {
 
 process plot_over_diff_cpg_regions_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools-3.5.6_rj'
 
     label 'normal_big_resources'
 
@@ -7114,7 +7114,7 @@ process plot_over_diff_cpg_regions_process {
 
 process atac_enrich_counts_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools_rj'
     label 'normal_big_resources'
 
     publishDir "./enrichment_of_experiment/", mode: 'copy', pattern: '*', overwrite: true
@@ -7373,7 +7373,7 @@ process get_merged_bigwig_process {
 
     label 'normal_big_resources'
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools_rj'
 
     publishDir "atac_analysis/allmerged_bigwigs", mode:'copy', pattern: "*", overwrite: true
 
@@ -7483,7 +7483,7 @@ process get_merged_bigwig_process {
 
 process atac_enrich_counts_2nd_version_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/deeptools_rj'
     label 'normal_big_resources'
 
     publishDir "./atac_analysis/enrichment_of_experiment/", mode: 'copy', pattern: '*', overwrite: true
