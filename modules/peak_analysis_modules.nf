@@ -547,7 +547,8 @@ process macs2_call_peaks_process_both {
 
     label 'normal_big_resources'
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/macs2_rj'
+    // using the macs2 apptainer container instead
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/macs2_rj'
 
     publishDir "./peak_files/${condition_label}", mode: 'copy', pattern: '*', overwrite: true
 
@@ -765,8 +766,9 @@ process macs3_call_peaks_process_both {
 
     label 'normal_big_resources'
 
+    // using the macs3 apptainer container now
     // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/macs2_rj'
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/macs3_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/macs3_rj'
 
     publishDir "./peak_files/${condition_label}", mode: 'copy', pattern: '*', overwrite: true
 
@@ -4498,7 +4500,7 @@ process mk_bed_for_sicer2_process {
     label 'normal_big_resources'
 
     // i am able to put bam files directly as input becasue i added bedtools to the conda environment
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/bedtools_rj'
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/bedtools_rj'
 
     //publishDir "./sicer2_peaks/", mode: 'copy', pattern:'*'
 
@@ -4545,7 +4547,9 @@ process sicer2_peakcall_process {
     label 'normal_big_resources'
 
     // i am able to put bam files directly as input becasue i added bedtools to the conda environment
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/sicer2_rj'
+    
+    // using the sicer2 apptainer container now
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/sicer2_rj'
 
     publishDir "./sicer2_peaks/", mode: 'copy', pattern:'*', overwrite: true
 
@@ -4682,7 +4686,9 @@ process sicer2_peakcall_process_noigg {
     // cpus = 26
 
     // i am able to put bam files directly as input becasue i added bedtools to the conda environment
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/sicer2_rj'
+    
+    // using the sicer2 apptainer container, if this process is still being used
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/sicer2_rj'
 
     publishDir "./sicer2_peaks/", mode: 'copy', pattern:'*', overwrite: true
 
