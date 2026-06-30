@@ -206,9 +206,9 @@ process find_diff_peaks_R_process {
         
         # now doing the next section to make the count matrix and the condition and experiment design
 
-        # making the matrix 
+        # making the matrix , but not here 
 
-        countsMatrix = matrix(data = NA, length(masterPeak), length(list_of_mBams) )
+        #countsMatrix = matrix(data = NA, length(masterPeak), length(list_of_mBams) )
 
 
         # I want to get the chr start end of the peaks and put them in the matrix as column names so I know which peaks I am looking at from the deseq2 results in the differential peaks.
@@ -216,6 +216,9 @@ process find_diff_peaks_R_process {
 
         # i should put the unique ids from the master peak object in the matrix as row names.
         unique_masterPeak_ids = paste0(as.character(seqnames(masterPeak)), ":" ,start(masterPeak), "-", end(masterPeak))
+
+        # have to make the matrix here then
+        countsMatrix = matrix(data = NA, length(unique_masterPeak_ids), length(list_of_mBams) )
 
         rownames(countsMatrix) = unique_masterPeak_ids
 
@@ -960,9 +963,9 @@ process find_diff_peaks_R_process {
         
         # now doing the next section to make the count matrix and the condition and experiment design
 
-        # making the matrix 
+        # making the matrix , but not here 
 
-        countsMatrix = matrix(data = NA, length(masterPeak), length(list_of_mBams) )
+        #countsMatrix = matrix(data = NA, length(masterPeak), length(list_of_mBams) )
 
 
         # I want to get the chr start end of the peaks and put them in the matrix as column names so I know which peaks I am looking at from the deseq2 results in the differential peaks.
@@ -970,6 +973,9 @@ process find_diff_peaks_R_process {
 
         # i should put the unique ids from the master peak object in the matrix as row names.
         unique_masterPeak_ids = paste0(as.character(seqnames(masterPeak)), ":" ,start(masterPeak), "-", end(masterPeak))
+
+        # have to make the matrix here then
+        countsMatrix = matrix(data = NA, length(unique_masterPeak_ids), length(list_of_mBams) )
 
         rownames(countsMatrix) = unique_masterPeak_ids
 
@@ -1796,9 +1802,9 @@ process find_diff_peaks_R_process_SE {
         
         # now doing the next section to make the count matrix and the condition and experiment design
 
-        # making the matrix 
+        # making the matrix , but not here 
 
-        countsMatrix = matrix(data = NA, length(masterPeak), length(list_of_mBams) )
+        #countsMatrix = matrix(data = NA, length(masterPeak), length(list_of_mBams) )
 
 
         # I want to get the chr start end of the peaks and put them in the matrix as column names so I know which peaks I am looking at from the deseq2 results in the differential peaks.
@@ -1806,6 +1812,9 @@ process find_diff_peaks_R_process_SE {
 
         # i should put the unique ids from the master peak object in the matrix as row names.
         unique_masterPeak_ids = paste0(as.character(seqnames(masterPeak)), ":" ,start(masterPeak), "-", end(masterPeak))
+
+        # have to make the matrix here then
+        countsMatrix = matrix(data = NA, length(unique_masterPeak_ids), length(list_of_mBams) )
 
         rownames(countsMatrix) = unique_masterPeak_ids
 
@@ -2544,9 +2553,9 @@ process find_diff_peaks_R_process_SE {
         
         # now doing the next section to make the count matrix and the condition and experiment design
 
-        # making the matrix 
+        # making the matrix , but not here 
 
-        countsMatrix = matrix(data = NA, length(masterPeak), length(list_of_mBams) )
+        #countsMatrix = matrix(data = NA, length(masterPeak), length(list_of_mBams) )
 
 
         # I want to get the chr start end of the peaks and put them in the matrix as column names so I know which peaks I am looking at from the deseq2 results in the differential peaks.
@@ -2555,6 +2564,9 @@ process find_diff_peaks_R_process_SE {
         # i should put the unique ids from the master peak object in the matrix as row names.
         unique_masterPeak_ids = paste0(as.character(seqnames(masterPeak)), ":" ,start(masterPeak), "-", end(masterPeak))
 
+        # have to make the matrix here then
+        countsMatrix = matrix(data = NA, length(unique_masterPeak_ids), length(list_of_mBams) )
+        
         rownames(countsMatrix) = unique_masterPeak_ids
 
         ####################### new version ##########################

@@ -1000,7 +1000,9 @@ process macs3_call_peaks_process_both {
 }
 
 process get_pval_bedgraph {
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/bedtools_rj'
+    
+    // using the apptainer for this process now
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/bedtools_rj'
     label 'normal_big_resources'
     publishDir "./peak_files/pval_signal_files", mode: 'copy', pattern: '*', overwrite: true
 
@@ -1046,7 +1048,8 @@ process get_pval_bedgraph {
 }
 
 process kenttools_get_bigwig {
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/uscs_utils_rj'
+    // using the apptainer and not conda anymore 
+    //conda '/ru-auth/local/home/rjohnson/miniconda3/envs/uscs_utils_rj'
     label 'normal_big_resources'
     publishDir "./peak_files/pval_signal_files", mode: 'copy', pattern: '*', overwrite: true
 
@@ -1080,7 +1083,8 @@ process kenttools_get_bigwig {
 
 process merge_peaks_bedtools_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/bedtools_rj'
+    // using the apptainer and not conda anymore
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/bedtools_rj'
 
     label 'normal_big_resources'
 
@@ -1151,7 +1155,8 @@ process merge_peaks_bedtools_process {
 
 process merge_concat_peaks_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/bedtools_rj'
+    // using the apptainer and not conda anymore
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/bedtools_rj'
 
     publishDir "idr_results/merged_concat_peaks", mode: 'copy', pattern: "*.bed", overwrite: true
 
@@ -1392,7 +1397,8 @@ process merge_concat_peaks_process {
 
 process find_idr_in_replicates_process {
 
-    conda '/ru-auth/local/home/rjohnson/miniconda3/envs/idr-2.0_rj'
+    // using the apptainer and not conda anymore
+    // conda '/ru-auth/local/home/rjohnson/miniconda3/envs/idr-2.0_rj'
     label 'super_big_resources'
     publishDir "idr_results/${histone[0]}/${condition[0]}", mode: 'copy', pattern:'*', overwrite: true
 
@@ -1502,9 +1508,14 @@ process find_idr_in_replicates_process {
         # you can change this idr by changing the value in the --return_idr parameter when running nextflow
 
         # i will make a if then statement where i will choose to run the idr if the length of the peak file is larger than 21 lines
-        peak1_length=\$(less ${sort_peak1} | wc -l )
-        peak2_length=\$(less ${sort_peak2} | wc -l )
-        peak3_length=\$(less ${sort_peak3} | wc -l )
+        #peak1_length=\$(less \${sort_peak1} | wc -l )
+        #peak2_length=\$(less \${sort_peak2} | wc -l )
+        #peak3_length=\$(less \${sort_peak3} | wc -l )
+
+        # try this instead
+        peak1_length=\$(wc -l < ${sort_peak1} )
+        peak2_length=\$(wc -l < ${sort_peak2} )
+        peak3_length=\$(wc -l < ${sort_peak3} )
 
         # rep 1 vs 2
         
@@ -1654,9 +1665,14 @@ process find_idr_in_replicates_process {
         # you can change this idr by changing the value in the --return_idr parameter when running nextflow
 
         # i will make a if then statement where i will choose to run the idr if the length of the peak file is larger than 21 lines
-        peak1_length=\$(less ${sort_peak1} | wc -l )
-        peak2_length=\$(less ${sort_peak2} | wc -l )
-        peak3_length=\$(less ${sort_peak3} | wc -l )
+        #peak1_length=\$(less \${sort_peak1} | wc -l )
+        #peak2_length=\$(less \${sort_peak2} | wc -l )
+        #peak3_length=\$(less \${sort_peak3} | wc -l )
+
+        # try this instead
+        peak1_length=\$(wc -l < ${sort_peak1} )
+        peak2_length=\$(wc -l < ${sort_peak2} )
+        peak3_length=\$(wc -l < ${sort_peak3} )
 
         # rep 1 vs 2
         
