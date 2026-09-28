@@ -365,7 +365,7 @@ workflow {
     else { 
 
         
-        if (params.macs2) {
+        if (params.macs2 || params.macs3) {
             mk_bw_call_peaks_workflow(control_bams_index_tuple_ch, wt_bams_index_tuple_ch, ref_genome_ch, ref_genome_size_ch, dups_log_ch )
 
             // get a channel with the final concat idr peaks
