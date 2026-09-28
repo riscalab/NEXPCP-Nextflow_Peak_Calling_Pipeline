@@ -906,7 +906,7 @@ process macs3_call_peaks_process_both {
 
         """
     }
-    else {
+    else if (params.broadPeak_data){
 
         """
         #!/usr/bin/env bash
